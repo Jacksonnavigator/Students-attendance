@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}Mark Attendance | Attendance System{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">Welcome, {{ student_name }}</h4>
+            </div>
+            <div class="card-body text-center">
+                <h5 class="mb-4">Today's Attendance</h5>
+                
+                {% if already_marked %}
+                    <div class="alert alert-success">
+                        <i class="bi bi-check-circle-fill me-2"></i>
+                        You have already marked your attendance for today.
+                    </div>
+                {% elif window_open %}
+                    <div class="alert alert-info">
+                        <i class="bi bi-info-circle-fill me-2"></i>
+                        Attendance window is currently open! Please mark your attendance.
+                    </div>
+                    <form action="{{ url_for('mark_attendance') }}" method="post">
+                        <button type="submit" class="btn btn-lg btn-success">
+                            Mark Present
+                        </button>
+                    </form>
+                {% else %}
+                    <div class="alert alert-warning">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                        Attendance window is currently closed. Please wait for your teacher to open it.
+                    </div>
+                {% endif %}
+            </div>
+            <div class="card-footer">
+                <div class="text-center">
+                    <a href="{{ url_for('logout') }}" class="btn btn-outline-secondary">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
