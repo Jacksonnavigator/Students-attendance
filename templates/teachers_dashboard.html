@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block title %}Monthly Report | Attendance System{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-8">
+        <h3>Monthly Attendance Report: {{ month_name }}</h3>
+    </div>
+    <div class="col-md-4 text-end">
+        <a href="{{ url_for('teacher_dashboard') }}" class="btn btn-primary">Back to Dashboard</a>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">Student Attendance Summary</h5>
+    </div>
+    <div class="card-body">
+        {% if attendance_data|length > 0 %}
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>Student Name</th>
+                            <th class="text-center">Days Present</th>
+                            <th class="text-center">Total Days</th>
+                            <th class="text-center">Attendance Percentage</th>
+                            <th class="text-center">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for student in attendance_data %}
+                        <tr>
+                            <td>{{ student.name }}</td>
+                            <td class="text-center">{{ student.days_present }}</td>
+                            <td class="text-center">{{ student.total_days }}</td>
+                            <td class="text-center">{{ student.percentage }}%</td>
+                            <td class="text-center">
+                                {% if student.percentage >= 75 %}
+                                    <span class="badge bg-success">Good</span>
+                                {% elif student.percentage >= 60 %}
+                                    <span class="badge bg-warning text-dark">Average</span>
+                                {% else %}
+                                    <span class="badge bg-danger">Poor</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="alert alert-info">
+                No attendance data available for {{ month_name }}.
+            </div>
+        {% endif %}
+    </div>
+    <div class="card-footer">
+        <div class="small text-muted">
+            <ul>
+                <li>Good: Attendance ≥ 75%</li>
+                <li>Average: Attendance between 60% and 75%</li>
+                <li>Poor: Attendance < 60%</li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}
